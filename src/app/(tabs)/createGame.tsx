@@ -1,13 +1,12 @@
-import { StyleSheet } from 'react-native';
-import { Text, View } from '@/src/components/Themed';
-import { ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, Text, View } from 'react-native';
+import React from 'react';
 
 export default function CreateGameScreen() {
   return (
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>Create Game</Text>
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <View style={styles.separator}/>
         {/* Add your create game form here */}
       </View>
     </ScrollView>
