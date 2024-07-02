@@ -1,15 +1,15 @@
-// src/app/(tabs)/tab1/index.tsx
-
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from '@/src/components/Themed';
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      {/* Add your home screen content here */}
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Home</Text>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        {/* Add your home screen content here */}
+      </View>
+    </ScrollView>
   );
 }
 
