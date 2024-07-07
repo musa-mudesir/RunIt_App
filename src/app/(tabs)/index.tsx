@@ -1,5 +1,6 @@
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Image } from 'react-native';
 import { Text, View } from '@/src/components/Themed';
+import React from 'react';
 
 export default function HomeScreen() {
   return (
@@ -7,6 +8,10 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <Text style={styles.title}>Run It</Text>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <Image
+        style={styles.image}
+        source={require('@/src/images/Soccer.png')}
+        />
         <Text style={styles.description}>
           Welcome to "Run It" – the ultimate app for organizing and managing pickup soccer games with ease! 
           Whether you're looking to join a game or create your own, "Run It" has you covered with all the features 
