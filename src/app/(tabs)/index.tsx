@@ -53,9 +53,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginHorizontal: 20,
     fontFamily: 'Helvetica, Arial, sans-serif',
-    
-
-
   },
   image: {
     width: '100%',

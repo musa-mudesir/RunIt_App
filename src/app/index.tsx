@@ -1,19 +1,39 @@
-import { View, Text } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import React from 'react';
 import Button from '../components/Button';
-import { Link } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 
-const index = () => {
+const Index = () => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
-      <Link href={'/(auth)/sign-in'} asChild>
-        <Button text="Sign In" />
-      </Link>
-      <Link href={'/(auth)/sign-up'} asChild>
-        <Button text="Create an Account" />
-      </Link>
+    <View style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
+        <Image
+          source={require('@/src/images/Soccer.png')}
+          style={styles.image}
+        />
+        <Link href={'/(auth)/sign-in'} asChild>
+          <Button text="Sign In" />
+        </Link>
+        <Link href={'/(auth)/sign-up'} asChild>
+          <Button text="Create an Account" />
+        </Link>
     </View>
   );
 };
 
-export default index;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 100,
+    backgroundColor: 'white',
+  },
+  image: {
+    width: 200,
+    height: 250,
+    resizeMode: 'contain', 
+    marginBottom: 20, 
+  },
+});
+
+export default Index;
