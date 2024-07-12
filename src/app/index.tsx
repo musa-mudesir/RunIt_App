@@ -11,6 +11,7 @@ const Index = () => {
           source={require('@/src/images/Soccer.png')}
           style={styles.image}
         />
+        <Text style={styles.title}>Run It App</Text>
         <Link href={'/(auth)/sign-in'} asChild>
           <Button text="Sign In" />
         </Link>
@@ -32,7 +33,14 @@ const styles = StyleSheet.create({
     width: 200,
     height: 250,
     resizeMode: 'contain', 
-    marginBottom: 20, 
+    marginBottom: 1, 
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 40,
+    color: '#333',
   },
 });
 

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Button from '../../components/Button';
 import Colors from '../../constants/Colors';
 import { Link, Stack } from 'expo-router';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+// import app from '../firebaseconfig'
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
