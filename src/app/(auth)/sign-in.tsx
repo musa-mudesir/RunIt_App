@@ -1,28 +1,32 @@
-// sign-in.tsx
 import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../../components/Button';
 import Colors from '../../constants/Colors';
 import { Link, Stack } from 'expo-router';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { app } from '../firebaseconfig'; // Ensure this path is correct
+import { getAuth, signInWithEmailAndPassword, User } from 'firebase/auth';
+import { auth } from '../firebaseconfig'; // Adjust path as per your project setup
 import { useNavigation } from '@react-navigation/native';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const auth = getAuth(app); // Initialize auth here
   const navigation = useNavigation();
+  const auth = getAuth();
 
   const handleSignIn = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log('User signed in successfully:', userCredential.user);
-      navigation.navigate('(tabs)');
-      // Navigate to the home screen on successful sign-in
+      const user = userCredential.user;
+
+      if (user.emailVerified) {
+        navigation.navigate('(tabs)'); // Navigate to your authenticated screen
+      } else {
+        Alert.alert('Email not verified', 'Please verify your email before logging in.', [{ text: 'OK' }]);
+      }
+
     } catch (error) {
       console.error('Error signing in:', error);
-      Alert.alert('Sign in error', 'Please enter the correct email and password', [{text: 'OK' }]);
+      Alert.alert('Sign in error', 'Invalid email or password. Please try again.', [{ text: 'OK' }]);
     }
   };
 
@@ -34,7 +38,7 @@ const SignInScreen = () => {
       <TextInput
         value={email}
         onChangeText={setEmail}
-        placeholder="jon@gmail.com"
+        placeholder="john.doe@example.com"
         style={styles.input}
       />
 
