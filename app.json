@@ -13,7 +13,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to allow you to take profile pictures.",
+        "NSPhotoLibraryUsageDescription": "This app uses the photo library to allow you to select profile pictures."
+      }
     },
     "android": {
       "adaptiveIcon": {

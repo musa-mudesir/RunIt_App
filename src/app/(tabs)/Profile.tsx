@@ -1,157 +1,193 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, ScrollView, Button, Alert, TouchableOpacity } from 'react-native';
+import { getAuth } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { Firestore } from '../firebaseconfig'; // Ensure these paths are correct
 
-export default function ProfileScreen() {
-  const [userName, setUserName] = useState('John Doe');
-  const [wins, setWins] = useState(10);
-  const [losses, setLosses] = useState(5);
-  const [draws, setDraws] = useState(2);
-  const [rating, setRating] = useState(4.5);
-  const [bio, setBio] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
+const icons = [
+  require('../icons/iconA.png'),
+  require('../icons/argentina.png'),
+  require('../icons/portugal.png'),
+  require('../icons/ethiopia.png'),
+  require('../icons/spain.png'),
+  require('../icons/france.png'),
+  require('../icons/brazil.png'),
+  require('../icons/england.png'),
+  require('../icons/united-states.png'),
+  require('../icons/germany.png'),
+];
+
+const ProfileScreen = () => {
+  const [userName, setUserName] = useState('');
+  const [wins, setWins] = useState(0);
+  const [losses, setLosses] = useState(0);
+  const [draws, setDraws] = useState(0);
+  const [rating, setRating] = useState(0);
+  const [bio, setBio] = useState('');
+  const [profilePicture, setProfilePicture] = useState(icons[0]); // Default to the first icon
+  const [iconSelection, setIconSelection] = useState(false);
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (user) {
+        const userProfileDoc = doc(Firestore, 'profiles', user.uid);
+        const userProfileSnapshot = await getDoc(userProfileDoc);
+        if (userProfileSnapshot.exists()) {
+          const userProfileData = userProfileSnapshot.data();
+          console.log('User Profile Data:', userProfileData);
+          console.log('User Name:', userProfileData.userName);
+          setUserName(userProfileData.userName || '');
+          setWins(userProfileData.wins || 0);
+          setLosses(userProfileData.losses || 0);
+          setDraws(userProfileData.draws || 0);
+          setRating(userProfileData.rating || 0);
+          setBio(userProfileData.bio || '');
+          setProfilePicture(userProfileData.profilePicture || icons[0]);
+        } else {
+          Alert.alert('Profile not found', 'Please complete your profile setup.');
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [user]);
+
+  const selectIcon = async (iconUri: string) => {
+    if (!user) return;
+
+    try {
+      // Save the selected icon's URI to Firestore
+      const userProfileDoc = doc(Firestore, 'profiles', user.uid);
+      await setDoc(userProfileDoc, { profilePicture: iconUri }, { merge: true });
+      setProfilePicture(iconUri);
+      setIconSelection(false);
+    } catch (error) {
+      console.error('Error updating profile picture:', error);
+      Alert.alert('Error updating profile picture', error.message);
+    }
+  };
 
   return (
-    <ScrollView>
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Profile</Text>
-      <View style={styles.separator}/>
+      <View style={styles.separator} />
+
       {/* Profile Picture */}
       <Image
-        source={{ uri: 'https://example.com/your-profile-picture-url.jpg' }}
+        source={profilePicture}
         style={styles.profilePicture}
       />
-      
-      {/* User Name */}
-      <TextInput
-        style={styles.input}
-        onChangeText={setUserName}
-        value={userName}
-        placeholder="Enter your name"
-      />
-      
-      {/* User Record */}
-      <View style={styles.recordContainer}>
-        <Text style={styles.recordTitle}>Record</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setWins(parseInt(text))}
-          value={wins.toString()}
-          placeholder="Wins"
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setLosses(parseInt(text))}
-          value={losses.toString()}
-          placeholder="Losses"
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setDraws(parseInt(text))}
-          value={draws.toString()}
-          placeholder="Draws"
-          keyboardType="numeric"
-        />
-      </View>
-      
-      {/* User Rating */}
-      <View style={styles.ratingContainer}>
-        <Text style={styles.ratingTitle}>Rating</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setRating(parseFloat(text))}
-          value={rating.toString()}
-          placeholder="Rating"
-          keyboardType="numeric"
-        />
-      </View>
-      
-      {/* Bio or Description */}
-      <View style={styles.bioContainer}>
-        <Text style={styles.bioTitle}>Bio</Text>
-        <TextInput
-          style={[styles.input, { height: 100 }]}
-          onChangeText={setBio}
-          value={bio}
-          placeholder="Enter your bio"
-          multiline
-        />
-      </View>
+      <Button title="Change Profile Picture" onPress={() => setIconSelection(true)} />
 
-      <Button title="Save Profile" onPress={() => alert('Profile saved!')} />
-    </View>
+      {/* Icon Selection Modal */}
+      {iconSelection && (
+        <View style={styles.iconSelection}>
+          {icons.map((icon, index) => (
+            <TouchableOpacity key={index} onPress={() => selectIcon(icon)}>
+              <Image source={icon} style={styles.icon} />
+            </TouchableOpacity>
+          ))}
+          <Button title="Cancel" onPress={() => setIconSelection(false)} />
+        </View>
+      )}
+
+      {/* User Information */}
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoLabel}>Name:</Text>
+        <Text style={styles.infoValue}>{userName}</Text>
+      </View>
+      
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoLabel}>Record:</Text>
+        <Text style={styles.infoValue}>Wins: {wins}</Text>
+        <Text style={styles.infoValue}>Losses: {losses}</Text>
+        <Text style={styles.infoValue}>Draws: {draws}</Text>
+      </View>
+      
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoLabel}>Rating:</Text>
+        <Text style={styles.infoValue}>{rating.toFixed(1)}</Text>
+      </View>
+      
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoLabel}>Bio:</Text>
+        <Text style={styles.infoValue}>{bio || 'No bio available'}</Text>
+      </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start',
     padding: 20,
+    backgroundColor: '#f5f5f5',
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#333',
+    marginBottom: 20,
   },
   separator: {
-    marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: '100%',
+    backgroundColor: '#ddd',
+    marginVertical: 10,
   },
   profilePicture: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: '#ddd',
+  },
+  iconSelection: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+  },
+  icon: {
+    width: 50, // Updated size
+    height: 50, // Updated size
+    margin: 10,
+    borderRadius: 25, // Adjusted to match size
+    borderWidth: 2,
+    borderColor: '#ddd',
+  },
+  infoContainer: {
+    width: '100%',
+    backgroundColor: '#fff',
+    padding: 15,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
     marginBottom: 20,
   },
-  input: {
-    width: '100%',
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  recordContainer: {
-    width: '100%',
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  recordTitle: {
-    fontSize: 20,
+  infoLabel: {
+    fontSize: 18,
     fontWeight: 'bold',
+    color: '#555',
     marginBottom: 5,
   },
-  ratingContainer: {
-    width: '100%',
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 10,
-    marginBottom: 20,
-    alignItems: 'center',
-  },
-  ratingTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  bioContainer: {
-    width: '100%',
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 10,
-  },
-  bioTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 5,
+  infoValue: {
+    fontSize: 16,
+    color: '#333',
   },
 });
+
+export default ProfileScreen;
