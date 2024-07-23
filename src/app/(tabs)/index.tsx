@@ -1,17 +1,20 @@
-import { ScrollView, StyleSheet, Image } from 'react-native';
+import { ScrollView, StyleSheet, Image, TouchableOpacity, Linking } from 'react-native';
 import { Text, View } from '@/src/components/Themed';
 import React from 'react';
-import { blue } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 export default function HomeScreen() {
+  const handleContactPress = () => {
+    Linking.openURL('walidesmael32@gmail.com');
+  };
+
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
         <Text style={styles.title}>Run It</Text>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Image
-        style={styles.image}
-        source={require('@/src/images/soccernew.jpg')}
+          style={styles.image}
+          source={require('@/src/images/soccernew.jpg')}
         />
         <Text style={styles.description}>
           Welcome to "Run It" – the ultimate app for organizing and managing pickup soccer games with ease! 
@@ -20,9 +23,27 @@ export default function HomeScreen() {
           Get started today and never miss a chance to play!
         </Text>
         <Image
-        style={styles.image}
-        source={require('@/src/images/Soccer.png')}
+          style={styles.image}
+          source={require('@/src/images/Soccer.png')}
         />
+        <View style={styles.missionContainer}>
+          <Text style={styles.missionDescription}>
+            Our mission at Run It is to bring soccer players together, making it easy for players to find and organize games.
+            We aim to foster a vibrant community where everyone, from beginners to seasoned players, can enjoy the game they love!
+          </Text>
+        </View>
+        <Image
+          style={styles.image}
+          source={require('@/src/images/run_it.jpg')}
+        />
+        <View style={styles.contactSection}>
+          <Text style={styles.contactDescription}>
+            If you have any questions, feedback, or encountered any bugs, please feel free to contact our developers.
+          </Text>
+          <TouchableOpacity style={styles.contactContainer} onPress={handleContactPress}>
+            <Text style={styles.contactText}>Contact Developers</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -30,18 +51,16 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: '#ADD8E6',
+    backgroundColor: '#008CBA',
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ADD8E6'
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    
   },
   separator: {
     marginVertical: 1,
@@ -49,6 +68,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   description: {
+    color: '#008CBA',
     fontSize: 16,
     textAlign: 'center',
     marginHorizontal: 20,
@@ -60,6 +80,35 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: 15,
   },
-
+  missionContainer: {
+    padding: 20,
+    marginVertical: 20,
+    width: '100%',
+    alignItems: 'center',
+  },
+  missionDescription: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#008CBA',
+  },
+  contactSection: {
+    marginTop: 20,
+    marginBottom: 40,
+    alignItems: 'center',
+  },
+  contactDescription: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginHorizontal: 20,
+    marginBottom: 10,
+  },
+  contactContainer: {
+    padding: 10,
+    backgroundColor: '#008CBA',
+    borderRadius: 5,
+  },
+  contactText: {
+    fontSize: 16,
+    color: '#fff',
+  },
 });
-
