@@ -4,7 +4,8 @@ import React from 'react';
 
 export default function HomeScreen() {
   const handleContactPress = () => {
-    Linking.openURL('walidesmael32@gmail.com');
+    
+    Linking.openURL("https://www.instagram.com/musamudesir_/");
   };
 
   return (
