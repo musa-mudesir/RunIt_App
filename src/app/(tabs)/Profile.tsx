@@ -317,9 +317,13 @@ const styles = StyleSheet.create({
   },
   editmodal: {
     position: 'absolute',
-    top: '30%',
-    left: '10%',
-    width: '80%',
+    top: '50%', // Center vertically
+    left: '50%', // Center horizontally
+    transform: [
+      { translateX: -150 }, // Adjust these values to match half of the modal's width
+      { translateY: -200 }  // Adjust these values to match half of the modal's height
+    ],
+    width: '80%', // Adjust width as needed
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
@@ -349,7 +353,7 @@ const styles = StyleSheet.create({
     color: '#323',
     margin: 10,
   },
-  adjustcontainer: {
+  adjustContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 10,
