@@ -10,10 +10,8 @@ RunIt is a mobile application that allows users to create and join local pickup 
 - **Responsive UI**: Clean and user-friendly interface designed with React Native and Expo.
 
 ## Installation
-
+To get RunIt App up and running, clone this repository to your machine, and then run the following code to install the needed dependencies
 ```sh
-git clone https://github.com/yourusername/runit-app.git
-cd runit-app
 npm install
 ```
 
@@ -28,7 +26,7 @@ npm start
 ```
 This will start the development server using Expo. You can then use the Expo Go app on your phone or an emulator to view the app.
 
-#Project Structure
+## Project Structure
 Here's an overview of the key directories and files in the project:
 
 ```sh
