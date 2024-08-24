@@ -4,7 +4,7 @@ import Button from '../../components/Button';
 import Colors from '../../constants/Colors';
 import { Link, Stack } from 'expo-router';
 import { getAuth, signInWithEmailAndPassword, User } from 'firebase/auth';
-import { auth } from '../firebaseconfig'; // Adjust path as per your project setup
+import { auth } from '../firebaseconfig';
 import { useNavigation } from '@react-navigation/native';
 
 const SignInScreen = () => {
@@ -19,7 +19,7 @@ const SignInScreen = () => {
       const user = userCredential.user;
 
       if (user.emailVerified) {
-        navigation.navigate('(tabs)'); // Navigate to your authenticated screen
+        navigation.navigate('(tabs)'); // Navigate to logged inhome screen
       } else {
         Alert.alert('Email not verified', 'Please verify your email before logging in.', [{ text: 'OK' }]);
       }
