@@ -16,7 +16,8 @@ export default function HomeScreen() {
         <Image
           style={styles.image}
           source={require('@/src/images/soccernew.jpg')}
-        /> {/* Shows the description of the app for users as soon as they log in */}
+        />
+        
         <Text style={styles.description}> 
           Welcome to "Run It" – the ultimate app for organizing and managing pickup soccer games with ease! 
           Whether you're looking to join a game or create your own, "Run It" has you covered with all the features 
@@ -24,7 +25,7 @@ export default function HomeScreen() {
           Get started today and never miss a chance to play!
         </Text>
         <Image
-          style={styles.image} {/* Displaying intreractive image to catch the users eye */}
+          style={styles.image} 
           source={require('@/src/images/Soccer.png')}
         />
         <View style={styles.missionContainer}>
